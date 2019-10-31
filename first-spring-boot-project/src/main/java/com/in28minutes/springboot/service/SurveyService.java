@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.in28minutes.springboot.model.Question;
 import com.in28minutes.springboot.model.Survey;
@@ -18,10 +18,12 @@ import com.in28minutes.springboot.model.Survey;
  * @author 10661300
  *
  */
-@Component
+//@Component
+@Service
 public class SurveyService {
 
 	public static List<Survey> listOfSurveys = new ArrayList<Survey>();
+	private static List<Question> listOfQstns = new ArrayList<Question>();
 	
 	private SecureRandom secureRandom = new SecureRandom();
 	
@@ -39,7 +41,11 @@ public class SurveyService {
 				"Second largest english speaking country", "India", Arrays
 						.asList("India", "Russia", "United States", "China"));
 		
-		List<Question> listOfQstns = Arrays.asList(question1,question2,question3,question4);
+		//List<Question> listOfQstns = Arrays.asList(question1,question2,question3,question4);
+		listOfQstns.add(question1);
+		listOfQstns.add(question2);
+		listOfQstns.add(question3);
+		listOfQstns.add(question4);
 		Survey survey = new Survey("Survey1", "Favorite SUrvey", "Desc of Survey", listOfQstns);
 		
 		listOfSurveys.add(survey);
@@ -92,7 +98,12 @@ public class SurveyService {
 		
 		String randomId = new BigInteger(130, secureRandom).toString(32);
 		question.setId(randomId);
-		survey.getQuestions().add(question);
+		try {
+			List<Question> questions = survey.getQuestions();
+			questions.add(question);
+		}catch(Exception e) {
+			System.out.println("Exception: "+e);
+		}
 		return question;
 	}
 }
