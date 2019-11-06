@@ -28,10 +28,20 @@ public class UserCommandLineRunner implements CommandLineRunner{
 		User user1 = new User("Purna", "Admin");
 		User user2 = new User("Chandu", "User");
 		
-		userRepository.save(user1);
-		userRepository.save(user2);
+		//userRepository.save(user1);
+		//userRepository.save(user2);
 		
 		userRepository.findAll().stream().forEach(user -> LOGGER.info(user.toString()));
+		
+		LOGGER.info("Admin users are:......");
+		userRepository.findByRole("Admin").forEach(user -> LOGGER.info(user.toString()));
+		
+		LOGGER.info("Find by name:");
+		LOGGER.info(userRepository.findByName("Purna").toString());
+		
+		LOGGER.info("Find Distinct name:");
+		LOGGER.info(userRepository.findDistinctByName("Purna").toString());
+		
 	}
 
 }

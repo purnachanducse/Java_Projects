@@ -21,7 +21,7 @@ public class User {
 	private String name;
 	private String role;
 	
-	public User() {
+	protected User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
