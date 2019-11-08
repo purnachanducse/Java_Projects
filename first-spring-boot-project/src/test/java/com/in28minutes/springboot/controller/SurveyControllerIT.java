@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONException;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -37,7 +38,13 @@ public class SurveyControllerIT {
 	@LocalServerPort
 	private int port;
 	
+	TestRestTemplate restTemplate = new TestRestTemplate();
+	HttpHeaders headers = new HttpHeaders();
 	
+	@Before
+	public void before() {
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+	}
 
 	@Test
 	public void testJsonAssert() throws JSONException {
@@ -46,10 +53,8 @@ public class SurveyControllerIT {
 	
 	@Test
 	public void testRetrieveSurveyQuestion() throws JSONException {
-		String url = "http://localhost:"+port+"/surveys/Survey1/questions/Question1";
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		String retrieveSpecificQuestionUrl = "/surveys/Survey1/questions/Question1";
+		String url = createUri(retrieveSpecificQuestionUrl);
 		
 		//String output = restTemplate.getForObject(url, String.class);
 		@SuppressWarnings("rawtypes")
@@ -62,13 +67,17 @@ public class SurveyControllerIT {
 		String expected = "{id:Question1,description:Largest Country in the World,correctAnswer:Russia,options:[India,Russia,United States,China]}";
 		//JSONAssert.assertEquals(expected, response.getBody(), false);
 	}
+
+	private String createUri(String uri) {
+		return "http://localhost:"+port+uri;
+	}
 	
 	@Test
 	public void retrieveSurveyQuestions() {
-		String url = "http://localhost:"+port+"/surveys/Survey1/questions";
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		
+		String retrieveAllQuestions = "/surveys/Survey1/questions";
+		String url = createUri(retrieveAllQuestions);
+		
 		ParameterizedTypeReference<List<Question>> myBean = new ParameterizedTypeReference<List<Question>>() {};
 		//ResponseEntity<List<Question>> responseEntity = restTemplate.exchange(url, HttpMethod.GET,new HttpEntity<String>(null,headers),new ParameterizedTypeReference<List<Question>>() {});
 		//ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET,new HttpEntity<String>(null,headers),String.class);
@@ -86,16 +95,14 @@ public class SurveyControllerIT {
 	
 	@Test
 	public void addQuestion() {
-		String url = "http://localhost:" + port + "/surveys/Survey1/questions";
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		
+		String addQuestion = "/surveys/Survey1/questions";
+		String url = createUri(addQuestion);
+
 		Question question = new Question("DOESNTMATTER", "Question1", "Russia",
 				Arrays.asList("India", "Russia", "United States", "China"));
 		
-		TestRestTemplate testRestTemplate = new TestRestTemplate();
-		ResponseEntity<String> response = testRestTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Question>(question,headers), String.class);
+		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Question>(question,headers), String.class);
 		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
 		System.out.println("actual: "+actual);
 		assertTrue(actual.contains("/surveys/Survey1/questions"));
