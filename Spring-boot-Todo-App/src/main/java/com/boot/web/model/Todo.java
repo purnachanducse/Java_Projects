@@ -1,35 +1,55 @@
 package com.boot.web.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
-public class Todo {
+import lombok.Data;
+
+@Entity
+public class Todo implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4497675402105999623L;
+	
+	
+	@Id
+	@GeneratedValue
     private int id;
     private String user;
     
     @Size(min = 10,message = "Enter atleast 10 characters")
+    @Column(name="description")
     private String desc;
     private Date targetDate;
     private boolean isDone;
     
-    
 
-    public Todo() {
+	/**
+	 * 
+	 */
+	public Todo() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Todo(int id, String user, String desc, Date targetDate,
+	public Todo(int id ,String user, String desc, Date targetDate,
             boolean isDone) {
-        super();
-        this.id = id;
+		this.id = id;
         this.user = user;
         this.desc = desc;
         this.targetDate = targetDate;
         this.isDone = isDone;
     }
-
-    public int getId() {
+    
+	public int getId() {
         return id;
     }
 
@@ -101,5 +121,5 @@ public class Todo {
                 "Todo [id=%s, user=%s, desc=%s, targetDate=%s, isDone=%s]", id,
                 user, desc, targetDate, isDone);
     }
-
+	
 }

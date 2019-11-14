@@ -23,7 +23,6 @@ public class ErrorController {
 		modelAndView.addObject("exception",exception.getStackTrace());
 		modelAndView.addObject("url", request.getRequestURL());
 		modelAndView.setViewName("error");
-		return null;
-		
+		return modelAndView;
 	}
 }
