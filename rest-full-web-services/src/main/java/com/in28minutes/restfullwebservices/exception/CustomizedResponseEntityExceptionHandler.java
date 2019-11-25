@@ -25,18 +25,21 @@ import com.in28minutes.restfullwebservices.UserNotFoundException;
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity handleAllException(Exception ex, WebRequest request) throws Exception {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExceptionHandler(UserNotFoundException.class)
 	public final ResponseEntity handleAllException(UserNotFoundException ex, WebRequest request) throws Exception {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected ResponseEntity handleMethodArgumentNotValid(
 			MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

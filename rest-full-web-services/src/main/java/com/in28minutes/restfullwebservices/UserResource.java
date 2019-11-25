@@ -3,6 +3,7 @@
  */
 package com.in28minutes.restfullwebservices;
 
+
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -40,10 +41,17 @@ public class UserResource {
 		if(!user.isPresent()) {
 			throw new UserNotFoundException("id-"+userId);
 		}
+		
+//		EntityModel<User> resource = new EntityModel<User>(user.get());
+//		@SuppressWarnings("deprecation")
+//		ControllerLinkBuilder linkTo = ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
+//		//ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+//		resource.add(linkTo.withRel("all-users"));
+//		return resource;
+		
 		return user;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@PostMapping("/users")
 	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
 		User addUser = userDAOService.addUser(user);
