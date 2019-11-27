@@ -20,11 +20,11 @@ public class UserDAOService {
 
 	private static List<User> usersList = new ArrayList<User>();
 	private int counter = Integer.MIN_VALUE;
-	static {
-		usersList.add(new User(1,"Purna",new Date()));
-		usersList.add(new User(2,"Chandu",new Date()));
-		usersList.add(new User(3,"Purna",new Date()));
-	}
+//	static {
+//		usersList.add(new User(1,"Purna",new Date()));
+//		usersList.add(new User(2,"Chandu",new Date()));
+//		usersList.add(new User(3,"Purna",new Date()));
+//	}
 	
 	public List<User> findAll(){
 		return usersList;
