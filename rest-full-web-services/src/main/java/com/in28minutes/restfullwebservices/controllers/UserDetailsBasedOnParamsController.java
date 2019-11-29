@@ -32,6 +32,12 @@ public class UserDetailsBasedOnParamsController {
 		return userDetailsById;
 	}
 	
+	@PostMapping("/jpaParams/users")
+	public void insertUserName(@RequestBody UserDetailsBasedOnParamsPojo basedOnParams) {
+		System.out.println("came to Controller");
+		serviceImpl.insertUser(basedOnParams);
+	}
+	
 	@PostMapping("/jpaParams/users/{userId}")
 	public void updateUserNameById(@PathVariable int userId,@RequestBody UserDetailsBasedOnParamsPojo basedOnParams) {
 		System.out.println("came to Controller");

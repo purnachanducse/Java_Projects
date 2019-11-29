@@ -25,10 +25,9 @@ import com.in28minutes.restfullwebservices.repo.UserDetailsBasedOnParamsRepo;
 @Transactional
 public class UserDetailsBasedOnParamsServiceImpl implements IUserDetailsBasedOnParamsService{
 
-	@Autowired
+	@PersistenceContext
 	private EntityManager entityManager;
 	
-	@SuppressWarnings("unused")
 	@Autowired
 	private UserDetailsBasedOnParamsRepo userDetailsBasedOnParamsRepo;
 	
@@ -37,6 +36,13 @@ public class UserDetailsBasedOnParamsServiceImpl implements IUserDetailsBasedOnP
 		// TODO Auto-generated method stub
 		List<UserDetailsBasedOnParams> findAllById = userDetailsBasedOnParamsRepo.findAllById(userId);
 		return findAllById;
+	}
+	
+	public void insertUser(UserDetailsBasedOnParamsPojo insertUser) {
+		entityManager.createNativeQuery("insert into USER (NAME,BIRTH_DATE) values (?,?)",UserDetailsBasedOnParams.class)
+					.setParameter(1, insertUser.getId())
+					.setParameter(2, insertUser.getUserName())
+					.setParameter(3, insertUser.getBirthDate()).executeUpdate();
 	}
 
 	@Override
