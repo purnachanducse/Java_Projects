@@ -3,16 +3,24 @@
  */
 package com.in28minutes.restfullwebservices.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.in28minutes.restfullwebservices.User;
 import com.in28minutes.restfullwebservices.entities.UserDetailsBasedOnParams;
 import com.in28minutes.restfullwebservices.pojos.UserDetailsBasedOnParamsPojo;
 import com.in28minutes.restfullwebservices.repo.UserDetailsBasedOnParamsRepo;
@@ -23,7 +31,7 @@ import com.in28minutes.restfullwebservices.repo.UserDetailsBasedOnParamsRepo;
  */
 @Service
 @Transactional
-public class UserDetailsBasedOnParamsServiceImpl implements IUserDetailsBasedOnParamsService{
+public class UserDetailsBasedOnParamsServiceImpl implements IUserDetailsBasedOnParamsService,IUserRepoCustom{
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -56,6 +64,20 @@ public class UserDetailsBasedOnParamsServiceImpl implements IUserDetailsBasedOnP
 		createNamedQuery.setParameter("userName", basedOnParams.getUserName());
 		createNamedQuery.setParameter("id",userId);
 		createNamedQuery.executeUpdate();
+	}
+
+	@Override
+	public List<User> findUsersbyUser(Set<String> names) {
+		// TODO Auto-generated method stub
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+		Root<User> user = query.from(User.class);
+		
+		Path<String> namePath = user.get("name");
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		names.forEach(name1 -> predicates.add(criteriaBuilder.like(namePath, name1)));
+		query.select(user).where(criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()])));
+		return entityManager.createQuery(query).getResultList();
 	}
 
 }

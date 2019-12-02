@@ -3,7 +3,9 @@
  */
 package com.in28minutes.restfullwebservices.controllers;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.in28minutes.restfullwebservices.User;
 import com.in28minutes.restfullwebservices.entities.UserDetailsBasedOnParams;
 import com.in28minutes.restfullwebservices.pojos.UserDetailsBasedOnParamsPojo;
 import com.in28minutes.restfullwebservices.services.UserDetailsBasedOnParamsServiceImpl;
@@ -30,6 +33,14 @@ public class UserDetailsBasedOnParamsController {
 	public List<UserDetailsBasedOnParams> getUserDetailsById(@PathVariable int userId) {
 		List<UserDetailsBasedOnParams> userDetailsById = serviceImpl.findAllById(userId);
 		return userDetailsById;
+	}
+	
+	@GetMapping("/jpaParams/users/{userName}")
+	public List<User> getUserDetailsByName(@PathVariable String userName) {
+		Set<String> userNames = new HashSet<String>();
+		userNames.add(userName);
+		List<User> userDetailsByName = serviceImpl.findUsersbyUser(userNames);
+		return userDetailsByName;
 	}
 	
 	@PostMapping("/jpaParams/users")
