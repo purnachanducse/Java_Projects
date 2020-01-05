@@ -8260,3 +8260,15 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2020-01-05 13:31:05.390
 !MESSAGE The POM for org.springframework.security:spring-security-test:jar:5.2.1.RELEASE is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+
+!ENTRY org.eclipse.egit.ui 4 0 2020-01-05 13:45:48.738
+!MESSAGE Input did not match supplied length. 590,051 bytes are missing.
+!STACK 0
+java.io.EOFException: Input did not match supplied length. 590,051 bytes are missing.
+	at org.eclipse.jgit.internal.storage.file.ObjectDirectoryInserter.shortInput(ObjectDirectoryInserter.java:291)
+	at org.eclipse.jgit.internal.storage.file.ObjectDirectoryInserter.toTemp(ObjectDirectoryInserter.java:221)
+	at org.eclipse.jgit.internal.storage.file.ObjectDirectoryInserter.insert(ObjectDirectoryInserter.java:146)
+	at org.eclipse.jgit.internal.storage.file.ObjectDirectoryInserter.insert(ObjectDirectoryInserter.java:122)
+	at org.eclipse.jgit.api.AddCommand.call(AddCommand.java:239)
+	at org.eclipse.egit.ui.internal.staging.StagingView$53.run(StagingView.java:3394)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:60)
