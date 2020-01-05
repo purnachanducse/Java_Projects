@@ -1,0 +1,13 @@
+{
+  "Description": "A simple Lambda function saying \"Hello World\".",
+  "Resources": {
+    "HelloWorld": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "com.fastcollab.trip.config.function.CreateTripFunction",
+        "Runtime" : "java8",
+        "CodeUri" : "./target/config-1.0.0.jar"
+      }
+    }
+  }
+}
