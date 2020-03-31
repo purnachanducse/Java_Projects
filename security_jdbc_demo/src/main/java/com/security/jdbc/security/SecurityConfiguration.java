@@ -28,13 +28,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// TODO Auto-generated method stub
-		auth.jdbcAuthentication()
-		.dataSource(dataSource).withDefaultSchema()
-		.withUser(
-				User.withUsername("user").password("user").roles("USER")
-		).withUser(
-				User.withUsername("admin").password("admin").roles("ADMIN")
-		);
+		auth.jdbcAuthentication().dataSource(dataSource).withDefaultSchema()
+				.withUser(User.withUsername("user").password("user").roles("USER"))
+				.withUser(User.withUsername("admin").password("admin").roles("ADMIN"))
+				.usersByUsernameQuery("select username,password,enabled from users where username=?")
+				.authoritiesByUsernameQuery("select username,authority from authorities where username=?");
 	}
 
 	@Override
