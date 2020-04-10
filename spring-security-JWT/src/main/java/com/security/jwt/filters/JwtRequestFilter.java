@@ -39,20 +39,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
+		System.out.println("Came to Request filter");
 		final String header = request.getHeader("Authorization");
-
+		System.out.println("header: "+header);
 		String username = null;
 		String jwt = null;
 
 		if (header != null && header.startsWith("Bearer ")) {
 			jwt = header.substring(7);
 			username = jwtUtil.extarctUsername(jwt);
+			System.out.println("jwt: "+jwt+", username:"+username);
 		}
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
 
 			if (jwtUtil.validateToken(jwt, userDetails)) {
+				System.out.println("came to validation of token");
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken
@@ -60,8 +63,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 
-			filterChain.doFilter(request, response);
 		}
+		filterChain.doFilter(request, response);
 	}
 
 }
