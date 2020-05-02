@@ -27,7 +27,7 @@ public class Processor {
 				System.out.println(
 						"Thread in produce() method before adding to list: " + Thread.currentThread().getName());
 				linkedList.add(value++);
-				lock.notify();
+				//lock.notify();
 			}
 		}
 	}
