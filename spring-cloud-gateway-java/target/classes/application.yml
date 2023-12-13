@@ -1,0 +1,87 @@
+server:
+  port: 9080
+  max-http-header-size: 40KB 
+  max-header-count: 400
+  
+security: 
+  enable-csrf: false
+  
+spring:
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  application:
+    name: CLOUD-GATEWAY
+  discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+     
+#    oauth2:
+#      client:
+#        provider:
+#          server: 
+#            token-uri: http://localhost:8080/oauth/token?scope=write&grant_type=client_credentials
+  cloud:
+    gateway:
+      routes:
+        - id: admin-service
+          uri: http://localhost:9082/
+          predicates:
+            - Path=/service/admin/**
+          filters:
+            - name: CibilFilterFactory
+#        - id: oauth-service
+#          uri: http://localhost:9086/
+#          predicates:
+#            - Path=/oauth/token/**
+#          filters:
+#            - name: CibilFilterFactory  
+      
+          
+#      globalcors:
+#        cors-configurations:
+#          "[/**]":
+#            allowCredentials: true
+#            allowedOrigins: "*"
+#            allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Content-Length, TOKEN, Authorization"
+#            allowedMethods: "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+#            maxAge: 3628800
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?createDatabaseIfNotExist=true&useSSL=false
+    username: root
+    password: root
+    #driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    continue-on-error: false
+    generate-unique-name: false
+  jpa:
+    database: default
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+         dialect: org.hibernate.dialect.MySQL5Dialect
+         
+eureka:
+  instance:
+    hostname: localhost
+    #hostname: 192.168.5.54
+    prefer-ip-address: false
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+      
+     
+
+      
+
+
+  
+
